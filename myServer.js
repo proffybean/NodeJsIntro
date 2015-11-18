@@ -15,3 +15,4 @@ http.createServer(function(requeset,response){
 console.log('Server running at http://127.0.0.1:6800');
 console.log('hostname: ' + os.hostname());
 console.log('serverName: ' + con.serverName);
+con.Sleep(5000);
