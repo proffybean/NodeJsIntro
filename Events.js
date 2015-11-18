@@ -1,6 +1,10 @@
 //
 // Events and streams
 //
+// This file can be run independatly.  It simply creates an EventEmitter
+// and subscribes to three events.  It then fires those evens and logs
+// the output.
+//
 
 // Grab the event stream so that I can emit my own events
 var EventEmitter = require('events').EventEmitter; 
@@ -12,17 +16,17 @@ var StartEvents = function(numEvents){
 	// I'm using nextTick so that the below return statement is called first.
 	// that was the event sucscribing happens before the events are emitted.
 	process.nextTick(function() {
+		var count = 0;
 		e.emit('start');
-
-		for (var i =0; i<numEvents; ++i){
-			setTimeout(function() {
-				e.emit('data');
-			}, 1000);
-		}
-		
-		e.emit('end');
+		var t = setInterval(function() {
+			e.emit('data');
+			 ++count;
+			if (count === numEvents){
+				e.emit('end');
+				clearInterval(t);
+			}
+		}, 1000);
 	});
-
 	return (e);
 };
 
