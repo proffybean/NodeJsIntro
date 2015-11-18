@@ -14,9 +14,11 @@ var StartEvents = function(numEvents){
 	process.nextTick(function() {
 		e.emit('start');
 
-		setTimeout(function() {
-			e.emit('data');
-		}, 1000);
+		for (var i =0; i<numEvents; ++i){
+			setTimeout(function() {
+				e.emit('data');
+			}, 1000);
+		}
 		
 		e.emit('end');
 	});
@@ -24,7 +26,7 @@ var StartEvents = function(numEvents){
 	return (e);
 };
 
-var r = StartEvents(1);
+var r = StartEvents(5);
 
 console.log("subscribing...");
 r.on('start', function() {
