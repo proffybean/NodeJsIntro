@@ -6,8 +6,8 @@ var socketio = require('socket.io');
 var fs = require('fs');
 
 var handler = function(req, resp) {
-	console.log('Received a request for:' + req.url);
-	console.log('Headers:' + req.headers['user-agent']);
+	console.log('Received a request for: ' + req.url);
+	console.log('From User-Agent: ' + req.headers['user-agent']);
 	fs.readFile(__dirname + '/socketIOclient.html', function(err, data) {
 		if (err){
 			resp.writeHead(500);
@@ -36,5 +36,5 @@ io.sockets.on('connection', function (socket) {
 });
  
 app.listen(8080);
- 
-console.log('Server running');
+
+console.log('Server running on ' + app.address().address + app.address().port);
