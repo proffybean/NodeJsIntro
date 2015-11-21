@@ -1,0 +1,40 @@
+<!--
+  Socket.io client
+-->
+<html>
+<head>
+	<!--<script src="/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>-->
+	<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+	<title>Socket.Io Chat App</title>
+	<script type="text/javascript">
+		var socket;
+		
+		function onload(){
+			socket = io.connect();
+
+			socket.on('toClientData', function(data){
+				document.getElementById("receivedData").innerHTML = data;
+			});
+		};
+		
+		function submitData() {
+			var data = document.getElementById("inputdata").value;
+			socket.emit('submit', data);	
+		};
+		
+	</script>
+</head>
+
+<body onload="onload()">
+	<h1>Socket.IO Chat</h1>
+	<form action="#">
+		<p>
+			You: <textarea rows="8" cols="40" type="text" id="inputdata"/></textarea>
+			<input type="button" value ="submit" onClick="submitData()"/>
+		</p>
+		<p>
+			Them: <textarea rows="8" cols="40" type="text" id="receivedData"/></textarea>
+		</p>
+	</form>
+</body>
+</html>

@@ -8,11 +8,14 @@ var fs = require('fs');
 var handler = function(req, resp) {
 	console.log('Received a request for: ' + req.url);
 	console.log('From User-Agent: ' + req.headers['user-agent']);
-	fs.readFile(__dirname + '/socketIOclient.html', function(err, data) {
+
+	var chatFile = "chatter.html";
+	fs.readFile(__dirname + '/' + chatFile, function(err, data) {
 		if (err){
 			resp.writeHead(500);
 			return resp.end('Error loading the file');
 		} else {
+			console.log('Sending: ' + chatFile);
 			resp.writeHead(200);
 			resp.end(data);
 		}
@@ -25,19 +28,14 @@ process.stdin.setEncoding('utf8');
  
 io.sockets.on('connection', function (socket) {
 	console.log("Got a connection");
-	 setInterval(function() {
-		 var timestamp = Date.now();
-		 console.log('Emitted: ' + timestamp);
-		 socket.emit('timer', timestamp);
-	 }, 10000);
 	 
-	 socket.on('submit', function(data) {
+	socket.on('submit', function(data) {
 		console.log('Submitted: ' + data); 
-	 });
+	});
 	 
-	 // Add std in text reading
+	 // Read text from the cmd line and emit it
 	process.stdin.on('data', function(chunk) {
-		socket.emit('timer', chunk);
+		socket.emit('toClientData', chunk);
 	});
 	 
 });
